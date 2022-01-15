@@ -5,6 +5,7 @@ colorPickerProxyEl.addEventListener("click", () => {
 });
 
 const colorMessageEl = document.querySelector(".color-message");
+const recentColorsEl = document.querySelector(".recent-colors");
 
 function colorPicker() {
   this.colorMessage = "";
@@ -21,6 +22,7 @@ function colorPicker() {
         this.previousColors[this.previousColors.length - 1])
     ) {
       this.previousColors.push(this.currentColor);
+      this.showRecentColors();
     }
     this.useDarkenColor = this.useLightenColor = false;
   };
@@ -51,6 +53,7 @@ function colorPicker() {
     ) {
       this.previousColors.push(this.currentColor);
     }
+    this.showRecentColors();
     this.currentColor = newColor;
     colorPickerProxyEl.style.backgroundColor = newColor;
     if (colorMessageEl.textContent !== "") {
@@ -71,6 +74,35 @@ function colorPicker() {
       if (colorMessageEl.textContent !== this.colorMessage) {
         colorMessageEl.textContent = this.colorMessage;
       }
+    }
+  };
+  this.showRecentColors = function () {
+    if (this.previousColors.length) {
+      let recentColors =
+        this.previousColors.length > 5
+          ? this.previousColors.slice(-5)
+          : this.previousColors;
+      document.querySelectorAll(".recent-colors *").forEach((el) => {
+        recentColorsEl.removeChild(el);
+      });
+
+      recentColors.forEach((color, i) => {
+        let recentColorSpan = document.createElement("span");
+        recentColorSpan.classList.add("recent-color");
+        recentColorSpan.style.backgroundColor = color;
+        recentColorSpan.addEventListener("click", () => {
+          this.previousColors =
+            this.previousColors.length > 5
+              ? this.previousColors.splice(
+                  this.previousColors.length - 5 + i,
+                  1
+                ) && this.previousColors
+              : this.previousColors.splice(i, 1) && this.previousColors;
+          this.showRecentColors();
+          this.setColor(color);
+        });
+        recentColorsEl.appendChild(recentColorSpan);
+      });
     }
   };
 }
