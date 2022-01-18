@@ -380,16 +380,15 @@ function checkConnectedSameColor(
   const checkEl = document.getElementsByClassName(checkInd)[0];
   checkedEls[checkInd] = true;
   if (currBackgroundColor === getStyle(checkEl, "backgroundColor")) {
-    return findConnectedSameColor(checkEl, checkedEls);
+    return [checkEl];
   } else {
     return [];
   }
 }
 
-function findConnectedSameColor(el, checkedEls = {}) {
-  let connectedEls = [el];
+function findConnectedSameColor(el, checkedEls = {}, checkColor) {
+  let connectedEls = [];
   let currentElInd;
-  const currBackgroundColor = getStyle(el, "backgroundColor");
   el.classList.forEach((className) => {
     if (className.match(/\d+-\d+/)) {
       currentElInd = className;
@@ -400,63 +399,41 @@ function findConnectedSameColor(el, checkedEls = {}) {
   // check left
   if (column >= 1) {
     connectedEls = connectedEls.concat(
-      checkConnectedSameColor(
-        currBackgroundColor,
-        checkedEls,
-        row,
-        column,
-        0,
-        -1
-      )
+      checkConnectedSameColor(checkColor, checkedEls, row, column, 0, -1)
     );
   }
   // check right
   if (column <= userColorPicker.columns - 2) {
     connectedEls = connectedEls.concat(
-      checkConnectedSameColor(
-        currBackgroundColor,
-        checkedEls,
-        row,
-        column,
-        0,
-        1
-      )
+      checkConnectedSameColor(checkColor, checkedEls, row, column, 0, 1)
     );
   }
   //check up
   if (row >= 1) {
     connectedEls = connectedEls.concat(
-      checkConnectedSameColor(
-        currBackgroundColor,
-        checkedEls,
-        row,
-        column,
-        -1,
-        0
-      )
+      checkConnectedSameColor(checkColor, checkedEls, row, column, -1, 0)
     );
   }
   //check down
   if (row <= userColorPicker.rows - 2) {
     connectedEls = connectedEls.concat(
-      checkConnectedSameColor(
-        currBackgroundColor,
-        checkedEls,
-        row,
-        column,
-        1,
-        0
-      )
+      checkConnectedSameColor(checkColor, checkedEls, row, column, 1, 0)
     );
   }
   return connectedEls;
 }
 
 function fill(el) {
-  let fillEls = findConnectedSameColor(el);
-  fillEls.forEach((el) => {
-    el.style.backgroundColor = userColorPicker.currentColor;
-  });
+  let checkColor = getStyle(el, "backgroundColor");
+  let elsChecked = {};
+  let fillEls = [el];
+  while (fillEls.length) {
+    let nextEl = fillEls.pop();
+    nextEl.style.backgroundColor = userColorPicker.currentColor;
+    fillEls = fillEls.concat(
+      findConnectedSameColor(nextEl, elsChecked, checkColor)
+    );
+  }
 }
 
 function setSameHeight() {
@@ -472,11 +449,3 @@ function setSameHeight() {
 }
 
 setSameHeight();
-
-/*
-TODO:
-Make controls into a select so that only one option is selected at a time
-Add Draw option for the default draw
-Add .selected class to whichever option is currently selected
-
-*/
