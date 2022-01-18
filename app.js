@@ -4,7 +4,6 @@ colorPickerProxyEl.addEventListener("click", () => {
   colorPickerEl.focus();
 });
 
-// const colorMessageEl = document.querySelector(".color-message");
 const recentColorsEl = document.querySelector(".recent-colors");
 
 const fillBtnEl = document.querySelector(".fill");
@@ -18,7 +17,6 @@ drawBtnEl.addEventListener("click", () => {
 });
 
 function colorPicker() {
-  //   this.colorMessage = "";
   this.currentColor = "#000000";
   this.previousColors = [];
   this.fillColor = "#777777";
@@ -147,23 +145,12 @@ function colorPicker() {
     this.showRecentColors();
     this.currentColor = newColor;
     colorPickerProxyEl.style.backgroundColor = newColor;
-    // if (colorMessageEl.textContent !== "") {
-    //   this.colorMessage = "";
-    //   colorMessageEl.textContent = "";
-    // }
   };
   this.previous = function () {
     if (this.previousColors.length) {
       this.setColor(this.previousColors.pop(), true);
       colorPickerEl.value = this.currentColor;
     }
-    // else {
-    //   this.colorMessage =
-    //     "No previous colors available, please choose a new color.";
-    //   if (colorMessageEl.textContent !== this.colorMessage) {
-    //     colorMessageEl.textContent = this.colorMessage;
-    //   }
-    // }
   };
   this.showRecentColors = function () {
     if (this.previousColors.length) {
@@ -437,15 +424,11 @@ function fill(el) {
 }
 
 function setSameHeight() {
-  const left = document.querySelector(".colors-container");
-  const topRight = document.querySelector(".grid-input-label");
+  const leftHeight = document.querySelector(".colors-container").clientHeight;
+  const topRightHeight =
+    document.querySelector(".grid-input-label").clientHeight;
   const bottomRight = document.querySelector(".range-container");
-  const leftHeightPx = getStyle(left, "height");
-  const topRightHeightPx = getStyle(topRight, "height");
-  const leftHeight = leftHeightPx.match(/\d+/)[0];
-  const topRightHeight = topRightHeightPx.match(/\d+/)[0];
-  const bottomRightHeight = Number(leftHeight) - Number(topRightHeight);
-  bottomRight.style.height = `${bottomRightHeight - 2}px`;
+  bottomRight.style.height = `${leftHeight - topRightHeight}px`;
 }
 
 setSameHeight();
