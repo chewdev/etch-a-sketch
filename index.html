@@ -9,34 +9,52 @@
     <script src="app.js" defer></script>
   </head>
   <body>
-    <h1>Etch-A-Sketch</h1>
     <div class="controls">
-      <span class="colorpicker-proxy"></span>
-      <input type="color" name="colorpicker" id="colorpicker" value="#000000" />
-      <div class="recent-container">
-        <button class="previous">Previous Color</button>
-        <div class="recent-colors"></div>
+      <div class="draw-modes-container">
+        <h2>Draw Mode</h2>
+        <div class="draw-choices-container">
+          <button class="draw">Draw</button>
+          <button class="fill">Fill</button>
+          <button class="eraser">Erase</button>
+          <button class="random">Rainbow</button>
+          <button class="darken">Darken</button>
+          <button class="lighten">Lighten</button>
+        </div>
       </div>
-      <button class="eraser">Eraser</button>
-      <button class="random">Rainbow</button>
-      <button class="darken">Darken</button>
-      <button class="lighten">Lighten</button>
-      <div class="range-container">
-        <label for="grid-input" class="grid-input-label"
-          >Rows/Columns: 16</label
-        >
-        <input
-          type="range"
-          name="grid-input"
-          id="grid-input"
-          value="16"
-          min="1"
-          max="100"
-          step="1"
-        />
+      <div class="colorpicker-container">
+        <div class="colors-container">
+          <h2>Choose Color</h2>
+          <div class="color-choose-container">
+            <span class="colorpicker-proxy"></span>
+            <input
+              type="color"
+              name="colorpicker"
+              id="colorpicker"
+              value="#000000"
+            />
+            <div class="recent-container">
+              <button class="previous">Previous Color</button>
+              <div class="recent-colors"></div>
+            </div>
+          </div>
+        </div>
+        <div class="range-clear-container">
+          <label for="grid-input" class="grid-input-label"
+            >Rows/Columns: 16</label
+          >
+          <div class="range-container">
+            <input
+              type="range"
+              name="grid-input"
+              id="grid-input"
+              value="16"
+              min="1"
+              max="100"
+              step="1"
+            /><button class="clear">Clear</button>
+          </div>
+        </div>
       </div>
-      <button class="clear">Clear</button>
-      <p class="color-message"></p>
     </div>
   </body>
 </html>
